@@ -1,0 +1,284 @@
+package com.claimsysapp;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.claimsysapp.databaseClasses.Ticket;
+import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.fragments.BottomSheetFragment;
+import com.claimsysapp.fragments.MyTicketsFragments;
+import com.claimsysapp.utility.DatabaseVariables;
+import com.claimsysapp.utility.Globals;
+
+import java.util.ArrayList;
+
+public class MyTicketsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private int role;
+
+    private DatabaseReference databaseUserReference;
+    private DatabaseReference databaseTicketReference;
+
+    private ArrayList<Ticket> ticketsList = new ArrayList<>();
+    private ArrayList<User> usersList = new ArrayList<>();
+
+    private ImageView currUserImage;
+
+    private MyTicketsFragments.SectionsPagerAdapter sectionsPagerAdapter;
+
+    private boolean isDownloaded;
+
+    //region Listeners
+
+    ValueEventListener ticketListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание заявок - БЛОКИРОВАНО");
+            while (!isDownloaded);
+            Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание заявок - НАЧАТО");
+            if (role != User.SIMPLE_USER) {
+                ticketsList = Globals.Downloads.Tickets.getOverseerTicketList(dataSnapshot, Globals.currentUser.getLogin(), true);
+                sectionsPagerAdapter.updateFirstFragment(MyTicketsActivity.this, ticketsList, usersList);
+
+                ArrayList<Ticket> listOfSolvedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE);
+                ArrayList<Ticket> listOfMyClosedTickets = new ArrayList<>();
+
+                for (Ticket ticket : listOfSolvedTickets)
+                    if (ticket.getSpecialistId().equals(Globals.currentUser.getLogin()))
+                        listOfMyClosedTickets.add(ticket);
+                sectionsPagerAdapter.updateSecondFragment(MyTicketsActivity.this, listOfMyClosedTickets, usersList);
+            } else {
+                ticketsList = Globals.Downloads.Tickets.getUserSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE, Globals.currentUser.getLogin());
+                ticketsList.addAll(Globals.Downloads.Tickets.getUserSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_UNMARKED_TICKET_TABLE, Globals.currentUser.getLogin()));
+                sectionsPagerAdapter.updateFirstFragment(MyTicketsActivity.this, ticketsList, usersList);
+
+                ArrayList<Ticket> listOfSolvedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE);
+                ArrayList<Ticket> listOfMyClosedTickets = new ArrayList<>();
+
+                for (Ticket ticket : listOfSolvedTickets)
+                    if (ticket.getUserId().equals(Globals.currentUser.getLogin()))
+                        listOfMyClosedTickets.add(ticket);
+                sectionsPagerAdapter.updateSecondFragment(MyTicketsActivity.this, listOfMyClosedTickets, usersList);
+            }
+            Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание заявок - ЗАКОНЧЕНО");
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
+    ValueEventListener userListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание данных зарегистрированных пользователей - НАЧАТО");
+            isDownloaded = false;
+            usersList = Globals.Downloads.Users.getVerifiedUserList(dataSnapshot);
+            isDownloaded = true;
+            Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание данных зарегистрированных пользователей - ЗАКОНЧЕНО");
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
+    //endregion
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_tickets);
+        role = Globals.currentUser.getRole();
+
+        initializeComponents();
+        setEvents();
+    }
+
+    private void initializeComponents(){
+        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
+        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_ALL_TICKET_TABLE);
+
+        isDownloaded = false;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Мои заявки");
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        currUserImage = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.userImage);
+        TextView userName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.userName);
+        TextView userType = (TextView)navigationView.getHeaderView(0).findViewById(R.id.userType);
+
+        currUserImage.setImageDrawable(Globals.ImageMethods.getRoundImage(MyTicketsActivity.this, Globals.currentUser.getUserName()));
+
+        sectionsPagerAdapter = new MyTicketsFragments.SectionsPagerAdapter(getSupportFragmentManager());
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(sectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        Menu nav_menu = navigationView.getMenu();
+        userName.setText(Globals.currentUser.getUserName());
+
+        nav_menu.findItem(R.id.userActions).setVisible(false);
+        if (role == User.DEPARTMENT_CHIEF) {
+            userType.setText("Начальник отдела");
+            nav_menu.findItem(R.id.listOfTickets).setVisible(false);
+        } else if (role == User.DEPARTMENT_MEMBER){
+            userType.setText("Специалист");
+            nav_menu.findItem(R.id.charts).setVisible(false);
+            nav_menu.findItem(R.id.listOfTickets).setVisible(false);
+        } else {
+            userType.setText("Пользователь");
+            nav_menu.findItem(R.id.charts).setVisible(false);
+            nav_menu.findItem(R.id.listOfTickets).setTitle("Создать заявку");
+        }
+    }
+
+    private void setEvents() {
+        currUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BottomSheetDialogFragment bottomSheetDialogFragment = BottomSheetFragment.newInstance(Globals.currentUser.getLogin(), Globals.currentUser.getLogin(), Globals.currentUser);
+                bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        if (drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawer(GravityCompat.START);
+        else {
+            new MaterialDialog.Builder(this)
+                    .title("Закрыть приложение")
+                    .content("Вы действительно хотите закрыть приложение?")
+                    .positiveText("Да")
+                    .negativeText("Нет")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            MyTicketsActivity.this.finishAffinity();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.listOfTickets) {
+            if (role != User.SIMPLE_USER) {
+                Intent intent = new Intent(MyTicketsActivity.this, ListOfTicketsActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(MyTicketsActivity.this, TicketTypePickerActivity.class);
+                startActivity(intent);
+            }
+        } else if (id == R.id.charts) {
+            Intent intent = new Intent(MyTicketsActivity.this, ChartsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.about) {
+            Globals.showAbout(MyTicketsActivity.this);
+        } else if (id == R.id.logOut) {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.exit) {
+            new MaterialDialog.Builder(this)
+                    .title("Закрыть приложение")
+                    .content("Вы действительно хотите закрыть приложение?")
+                    .positiveText("Да")
+                    .negativeText("Нет")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            MyTicketsActivity.this.finishAffinity();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    protected void onStop() {
+        databaseUserReference.removeEventListener(userListener);
+        databaseTicketReference.removeEventListener(ticketListener);
+        super.onStop();
+        Globals.logInfoAPK(MyTicketsActivity.this,  "onStop - ВЫПОЛНЕН");
+    }
+
+    @Override
+    protected void onPause() {
+        databaseUserReference.removeEventListener(userListener);
+        databaseTicketReference.removeEventListener(ticketListener);
+        isDownloaded = false;
+        //overridePendingTransition(R.anim.anim_slide_from_right, R.anim.anim_slide_to_left);
+        //TODO переделать
+        super.onPause();
+        Globals.logInfoAPK(MyTicketsActivity.this,  "onPause - ВЫПОЛНЕН");
+    }
+
+    @Override
+    protected void onResume() {
+        databaseUserReference.addValueEventListener(userListener);
+        databaseTicketReference.addValueEventListener(ticketListener);
+        super.onResume();
+        Globals.logInfoAPK(MyTicketsActivity.this,  "onResume - ВЫПОЛНЕН");
+    }
+}

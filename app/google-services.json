@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "439873318664",
-    "firebase_url": "https://infsysprojteam2-abbdf.firebaseio.com",
-    "project_id": "infsysprojteam2-abbdf",
-    "storage_bucket": "infsysprojteam2-abbdf.appspot.com"
+    "project_number": "1030498199800",
+    "firebase_url": "https://claimsysapp.firebaseio.com",
+    "project_id": "claimsysapp",
+    "storage_bucket": "claimsysapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:439873318664:android:32fb6743ee7ca060",
+        "mobilesdk_app_id": "1:1030498199800:android:977f23e44591f381",
         "android_client_info": {
-          "package_name": "com.techsupportapp"
+          "package_name": "com.claimsysapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "439873318664-o9e72ippaksm5c5771u77n7hdsgt3f7j.apps.googleusercontent.com",
+          "client_id": "1030498199800-hbt5h5s52gs88g0ts95co8u67bheoo2r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjtMjgfcgJjnmeCUNowgJr47xZHpl_3js"
+          "current_key": "AIzaSyCbL1l1APAALXrZADHcOma86oPQFdL9qiQ"
         }
       ],
       "services": {

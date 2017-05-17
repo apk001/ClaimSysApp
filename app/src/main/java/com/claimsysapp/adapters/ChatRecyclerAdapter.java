@@ -24,10 +24,14 @@ import java.util.List;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    //Messages type
+
     private static final int TYPE_LEFT = 0;
     private static final int TYPE_RIGHT = 1;
     private static final int TYPE_REQUEST_IN = 2;
     private static final int TYPE_REQUEST_OUT = 3;
+
+    //Fields
 
     private Query mRef;
     private Context context;

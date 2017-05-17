@@ -17,7 +17,7 @@ import com.claimsysapp.databaseClasses.userClass.User;
 
 import java.util.ArrayList;
 
-import static com.claimsysapp.utility.Globals.Downloads.Users.getVerifiedUserList;
+import static com.claimsysapp.utility.Globals.Downloads.Users.getUserList;
 
 public class Globals {
 
@@ -129,25 +129,30 @@ public class Globals {
              * @param dataSnapshot Снимок базы данных.
              * @return Всех подтвержденных пользователей.
              */
-            public static ArrayList<User> getVerifiedUserList(DataSnapshot dataSnapshot) {
+            public static ArrayList<User> getUserList(DataSnapshot dataSnapshot, boolean rootFolder) {
                 ArrayList<User> resultList = new ArrayList<User>();
-                resultList.addAll(getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_CHIEF_TABLE));
-                resultList.addAll(getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SIMPLE_USER_TABLE));
-                resultList.addAll(getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SPECIALIST_TABLE));
-                resultList.addAll(getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_CHIEF_TABLE, rootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_USER_TABLE, rootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_WORKER_TABLE, rootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_MANAGER_TABLE, rootFolder));
                 return resultList;
             }
 
             /**
              * Метод, скачивающий из базы данных подтвержденных пользователей с определенными правами.
              * @param dataSnapshot Снимок базы данных.
-             * @param databaseTablePath Путь в базе данных к необходимой категории подтвержденных пользователей.
+             * @param userTypePath Путь в базе данных к необходимой категории подтвержденных пользователей.
              * @return Всех подтвержденных пользователей с определенными правами.
              */
-            public static ArrayList<User> getSpecificVerifiedUserList(DataSnapshot dataSnapshot, String databaseTablePath) {
+            public static ArrayList<User> getSpecificUserList(DataSnapshot dataSnapshot, String userTypePath, boolean rootFolder) {
                 ArrayList<User> resultList = new ArrayList<User>();
-                for (DataSnapshot userRecord : dataSnapshot.child(databaseTablePath).getChildren())
-                    resultList.add(userRecord.getValue(User.class));
+                if (rootFolder)
+                    for (DataSnapshot userRecord :
+                            dataSnapshot.child(DatabaseVariables.DATABASE_ALL_USER_TABLE).child(userTypePath).getChildren())
+                        resultList.add(userRecord.getValue(User.class));
+                else
+                    for (DataSnapshot userRecord : dataSnapshot.child(userTypePath).getChildren())
+                        resultList.add(userRecord.getValue(User.class));
                 return resultList;
             }
 
@@ -174,7 +179,7 @@ public class Globals {
              */
             public static ArrayList<String> getVerifiedLogins(DataSnapshot dataSnapshot) {
                 ArrayList<String> resultList = new ArrayList<String>();
-                ArrayList<User> userList = getVerifiedUserList(dataSnapshot);
+                ArrayList<User> userList = getUserList(dataSnapshot, true);
                 for (User user : userList)
                     resultList.add(user.getLogin());
                 return resultList;

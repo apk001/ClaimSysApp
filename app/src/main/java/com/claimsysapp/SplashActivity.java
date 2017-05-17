@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       // databaseReference.addValueEventListener(valueEventListener);
+        databaseReference.addValueEventListener(valueEventListener);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
                 valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<User> userList = Globals.Downloads.Users.getVerifiedUserList(dataSnapshot);
+                        ArrayList<User> userList = Globals.Downloads.Users.getUserList(dataSnapshot, false);
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SplashActivity.this);
                         checkVerificationData(userList, preferences.getString("Login", ""), preferences.getString("Password", ""));
                     }
@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
                         SplashActivity.this.finish();
                     }
                 };
-                databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
+                databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
             } else {
                 Toast.makeText(getApplicationContext(), "Нет подключения к интернету", Toast.LENGTH_LONG).show();
                 showNextActivity();

@@ -58,12 +58,12 @@ public class UserActionsActivity extends AppCompatActivity implements Navigation
         public void onDataChange(DataSnapshot dataSnapshot) {
             if (!search) {
                 Globals.logInfoAPK(UserActionsActivity.this, "Скачивание данных пользователей - НАЧАТО");
-                unverifiedUsersList = Globals.Downloads.Users.getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.ExceptFolder.Users.DATABASE_UNVERIFIED_USER_TABLE);
+               // unverifiedUsersList = Globals.Downloads.Users.getSpecificUserList(dataSnapshot, DatabaseVariables.ExceptFolder.Users.DATABASE_UNVERIFIED_USER_TABLE);
                 if (!mSectionsPagerAdapter.updateFirstFragment(unverifiedUsersList, UserActionsActivity.this, FirebaseDatabase.getInstance().getReference(), search))
                     MenuItemCompat.collapseActionView(searchMenu);
 
 
-                usersList = Globals.Downloads.Users.getVerifiedUserList(dataSnapshot);
+             //   usersList = Globals.Downloads.Users.getUserList(dataSnapshot);
                 mSectionsPagerAdapter.updateSecondFragment(usersList, UserActionsActivity.this);
                 Globals.logInfoAPK(UserActionsActivity.this, "Скачивание данных пользователей - ОКОНЧЕНО");
             }

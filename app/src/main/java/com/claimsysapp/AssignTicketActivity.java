@@ -33,8 +33,8 @@ public class AssignTicketActivity extends AppCompatActivity {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             Globals.logInfoAPK(AssignTicketActivity.this, "Скачивание данных пользователей - НАЧАТО");
-            specialistsList = Globals.Downloads.Users.getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_SPECIALIST_TABLE);
-            chiefsList = Globals.Downloads.Users.getSpecificVerifiedUserList(dataSnapshot, DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_CHIEF_TABLE);
+         //   specialistsList = Globals.Downloads.Users.getSpecificUserList(dataSnapshot, DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_SPECIALIST_TABLE);
+           // chiefsList = Globals.Downloads.Users.getSpecificUserList(dataSnapshot, DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_CHIEF_TABLE);
             ArrayList<SpecialistsExpandableRecyclerAdapter.TicketListItem> ticketListItems = new ArrayList<>();
 
             specialistsList.addAll(chiefsList);

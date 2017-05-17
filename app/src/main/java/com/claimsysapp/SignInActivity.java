@@ -32,8 +32,6 @@ import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Класс для аутентификации пользователей.
@@ -44,7 +42,6 @@ public class SignInActivity extends AppCompatActivity {
     //region Fields
 
     private ArrayList<User> userList = new ArrayList<User>();
-    private ArrayList<String> unverifiedLoginList = new ArrayList<String>();
 
     private DatabaseReference databaseReference;
 
@@ -73,10 +70,8 @@ public class SignInActivity extends AppCompatActivity {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             isDownloaded = false;
-            unverifiedLoginList.clear();
 
-            userList = Globals.Downloads.Users.getVerifiedUserList(dataSnapshot);
-            unverifiedLoginList = Globals.Downloads.Strings.getUnverifiedLogins(dataSnapshot);
+            userList = Globals.Downloads.Users.getUserList(dataSnapshot, false);
 
             isDownloaded = true;
             if (loadingDialog != null){
@@ -153,16 +148,9 @@ public class SignInActivity extends AppCompatActivity {
     /**
      * Проверка полей логина и пароля, проверка подтверждения заявки на получение аккаунта.
      * @return true - если поля заполнены и аккаунт не находится на рассмотрении на добавление.
-     * false - если хотя бы одно поле не заплонено или аккаунт пользователя находится на
-     * рассмотрении на добавление в систему.
+     * false - если хотя бы одно поле не заплонено
      */
     private boolean checkFields() {
-        int index = Collections.binarySearch(unverifiedLoginList, loginET.getText().toString(), new Comparator<String>() {
-            @Override
-            public int compare(String lhs, String rhs) {
-                return lhs.compareTo(rhs);
-            }
-        });
         if (loginET.getText().toString().isEmpty()) {
             loginET.requestFocus();
             TextInputLayout loginLayout = (TextInputLayout) findViewById(R.id.login_layout);
@@ -177,10 +165,6 @@ public class SignInActivity extends AppCompatActivity {
             passwordLayout.setError(getResources().getString(R.string.empty_field));
             Globals.showKeyboardOnEditText(SignInActivity.this, passwordET);
             return false;
-        } else if (index >= 0) {
-            Toast.makeText(getApplicationContext(), "Ваша заявка в списке ожидания. " +
-                    "Подождите, пока диспетчер не примет ее", Toast.LENGTH_LONG).show();
-            return false;
         } else return true;
     }
 
@@ -194,7 +178,7 @@ public class SignInActivity extends AppCompatActivity {
                 && ++i < userList.size()); //TODO binarySearch
         if (i >= userList.size()) {
             passwordET.setText("");
-            Toast.makeText(getApplicationContext(), "Логин и/или пароль введен неверно. " +
+            Toast.makeText(getApplicationContext(), "Введенного логина не существует. " +
                     "Повторите попытку", Toast.LENGTH_LONG).show();
         }
         else if (loginET.getText().toString().equals(userList.get(i).getLogin()) &&
@@ -244,7 +228,7 @@ public class SignInActivity extends AppCompatActivity {
 
         rememberPasCB = (CheckBox)findViewById((R.id.checkBoxBold));
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
+        databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
 
         isDownloaded = false;
     }

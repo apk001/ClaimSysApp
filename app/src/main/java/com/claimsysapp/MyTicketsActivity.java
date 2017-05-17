@@ -95,7 +95,7 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
         public void onDataChange(DataSnapshot dataSnapshot) {
             Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание данных зарегистрированных пользователей - НАЧАТО");
             isDownloaded = false;
-            usersList = Globals.Downloads.Users.getVerifiedUserList(dataSnapshot);
+            usersList = Globals.Downloads.Users.getUserList(dataSnapshot, false);
             isDownloaded = true;
             Globals.logInfoAPK(MyTicketsActivity.this, "Скачивание данных зарегистрированных пользователей - ЗАКОНЧЕНО");
         }

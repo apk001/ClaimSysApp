@@ -4,6 +4,17 @@ public class DatabaseVariables {
 
     public static final String FIREBASE_URL = "https://infsysprojteam2-abbdf.firebaseio.com/";
 
+    public static final String DATABASE_ALL_USER_TABLE = "user_table";
+
+    public static class UserFolder {
+
+        public static final String DATABASE_USER_TABLE = "simple_user_table";
+        public static final String DATABASE_WORKER_TABLE = "worker_table";
+        public static final String DATABASE_CHIEF_TABLE = "chief_table";
+        public static final String DATABASE_MANAGER_TABLE = "manager_table";
+
+    }
+
     public static class FullPath {
 
         public static class Users {

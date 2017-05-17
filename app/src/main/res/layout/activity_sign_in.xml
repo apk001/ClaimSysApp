@@ -89,14 +89,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/forgotPassword"
-                    android:clickable="true"
-                    android:textSize="19dp"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Забыли пароль?"/>
 
                 <TextView
                     android:id="@+id/signUp"
@@ -107,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Регистрация"/>
+
             </LinearLayout>
 
         </LinearLayout>

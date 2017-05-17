@@ -11,7 +11,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 
 import java.io.BufferedWriter;
 import java.io.File;

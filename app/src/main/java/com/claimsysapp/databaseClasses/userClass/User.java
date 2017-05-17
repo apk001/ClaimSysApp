@@ -1,4 +1,4 @@
-package com.claimsysapp.databaseClasses;
+package com.claimsysapp.databaseClasses.userClass;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import java.util.Locale;
 
 /**
  * Класс, агрегирующий регистрационные данные подтвержденного пользователя.
- * Основной {@link #User(String branchId, boolean isBlocked, String login, String password, String userName, String workPlace) конструктор}.
+ * Основной {@link #User(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) конструктор}.
  * @author Monarch
  */
 public class User extends AbstractUser implements Serializable {

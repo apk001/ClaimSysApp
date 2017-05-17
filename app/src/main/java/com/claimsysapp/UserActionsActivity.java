@@ -2,7 +2,6 @@ package com.claimsysapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.NavigationView;
@@ -29,7 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.fragments.BottomSheetFragment;
 import com.claimsysapp.fragments.UserActionsFragments;
 import com.claimsysapp.utility.DatabaseVariables;
@@ -192,8 +191,8 @@ public class UserActionsActivity extends AppCompatActivity implements Navigation
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawer.isDrawerOpen(GravityCompat.END))
+            drawer.closeDrawer(GravityCompat.END);
         else
             finish();
     }
@@ -241,7 +240,7 @@ public class UserActionsActivity extends AppCompatActivity implements Navigation
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.END);
         return true;
     }
 

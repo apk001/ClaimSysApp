@@ -22,16 +22,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.claimsysapp.databaseClasses.DepartmentChief;
-import com.claimsysapp.databaseClasses.DepartmentMember;
-import com.claimsysapp.databaseClasses.Manager;
-import com.claimsysapp.databaseClasses.SimpleUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 

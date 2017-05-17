@@ -28,7 +28,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/ic_event_note_black_48dp"
                 android:layout_gravity="center_vertical"
                 />
 

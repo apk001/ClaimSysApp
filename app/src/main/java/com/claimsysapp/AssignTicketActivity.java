@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 import com.claimsysapp.adapters.SpecialistsExpandableRecyclerAdapter;
 import com.claimsysapp.databaseClasses.Ticket;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 

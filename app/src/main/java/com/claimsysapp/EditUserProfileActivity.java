@@ -17,7 +17,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 

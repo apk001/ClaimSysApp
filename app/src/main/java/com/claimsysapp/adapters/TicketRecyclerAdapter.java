@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.claimsysapp.R;
 import com.claimsysapp.databaseClasses.Ticket;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.fragments.BottomSheetFragment;
 import com.claimsysapp.utility.Globals;
 

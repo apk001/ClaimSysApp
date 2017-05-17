@@ -1,13 +1,13 @@
-package com.claimsysapp.databaseClasses;
+package com.claimsysapp.databaseClasses.userClass;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.claimsysapp.MyTicketsActivity;
 
-public class DepartmentMember extends User{
+public class SimpleUser extends User{
 
-    public DepartmentMember(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) {
+    public SimpleUser(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) {
         super(branchId, isBlocked, login, password, role, userName, workPlace);
     }
 
@@ -15,4 +15,5 @@ public class DepartmentMember extends User{
     public void signIn(Context context, Context source) {
         context.startActivity(new Intent(source, MyTicketsActivity.class));
     }
+
 }

@@ -21,7 +21,7 @@ import com.claimsysapp.R;
 import com.claimsysapp.UserActionsActivity;
 import com.claimsysapp.adapters.UnverifiedUserRecyclerAdapter;
 import com.claimsysapp.adapters.UserRecyclerAdapter;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 import com.claimsysapp.utility.ItemClickSupport;

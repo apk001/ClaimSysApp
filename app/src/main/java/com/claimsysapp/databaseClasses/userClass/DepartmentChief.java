@@ -1,4 +1,4 @@
-package com.claimsysapp.databaseClasses;
+package com.claimsysapp.databaseClasses.userClass;
 
 import android.content.Context;
 import android.content.Intent;

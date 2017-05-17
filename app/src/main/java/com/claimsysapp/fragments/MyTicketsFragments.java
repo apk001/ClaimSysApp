@@ -22,7 +22,7 @@ import com.claimsysapp.MessagingActivity;
 import com.claimsysapp.R;
 import com.claimsysapp.adapters.TicketRecyclerAdapter;
 import com.claimsysapp.databaseClasses.Ticket;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseStorage;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;

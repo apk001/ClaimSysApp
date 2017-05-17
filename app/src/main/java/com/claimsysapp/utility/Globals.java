@@ -13,7 +13,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.database.DataSnapshot;
 import com.claimsysapp.R;
 import com.claimsysapp.databaseClasses.Ticket;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 
 import java.util.ArrayList;
 

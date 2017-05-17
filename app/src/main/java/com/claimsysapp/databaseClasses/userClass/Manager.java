@@ -1,10 +1,9 @@
-package com.claimsysapp.databaseClasses;
+package com.claimsysapp.databaseClasses.userClass;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.claimsysapp.ListOfTicketsActivity;
-import com.claimsysapp.SignInActivity;
 
 public class Manager extends User{
 

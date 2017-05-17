@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 
@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        databaseReference.addValueEventListener(valueEventListener);
+       // databaseReference.addValueEventListener(valueEventListener);
     }
 
     @Override
@@ -86,10 +86,14 @@ public class SplashActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Вход выполнен", Toast.LENGTH_SHORT).show();
 
         Globals.currentUser = user;
-        if (user.getRole() != User.MANAGER)
-            startActivity(new Intent(SplashActivity.this, MyTicketsActivity.class));
-        else
-            startActivity(new Intent(SplashActivity.this, ListOfTicketsActivity.class));
+
+        switch (user.getRole()) {
+            case User.SIMPLE_USER: Globals.currentUser = user.toSimpleUser(); break;
+            case User.MANAGER: Globals.currentUser = user.toManager(); break;
+            case User.DEPARTMENT_MEMBER: Globals.currentUser = user.toDepartmentMember(); break;
+            case User.DEPARTMENT_CHIEF: Globals.currentUser = user.toDepartmentChief(); break;
+        }
+        Globals.currentUser.signIn(this, SplashActivity.this);
         SplashActivity.this.finish();
     }
 

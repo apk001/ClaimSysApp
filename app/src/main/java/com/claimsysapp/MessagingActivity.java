@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.claimsysapp.adapters.ChatRecyclerAdapter;
 import com.claimsysapp.databaseClasses.ChatMessage;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseStorage;
 import com.claimsysapp.utility.Globals;
 

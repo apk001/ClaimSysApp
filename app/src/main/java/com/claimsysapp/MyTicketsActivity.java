@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.claimsysapp.databaseClasses.Ticket;
-import com.claimsysapp.databaseClasses.User;
+import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.fragments.BottomSheetFragment;
 import com.claimsysapp.fragments.MyTicketsFragments;
 import com.claimsysapp.utility.DatabaseVariables;
@@ -183,8 +183,8 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawer.isDrawerOpen(GravityCompat.END))
+            drawer.closeDrawer(GravityCompat.END);
         else {
             new MaterialDialog.Builder(this)
                     .title("Закрыть приложение")
@@ -251,7 +251,7 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.END);
         return true;
     }
 

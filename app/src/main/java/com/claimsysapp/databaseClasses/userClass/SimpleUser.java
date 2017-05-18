@@ -7,8 +7,8 @@ import com.claimsysapp.MyTicketsActivity;
 
 public class SimpleUser extends User{
 
-    public SimpleUser(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) {
-        super(branchId, isBlocked, login, password, role, userName, workPlace);
+    public SimpleUser(String branchId, String login, String password, int role, String userName) {
+        super(branchId, login, password, role, userName);
     }
 
     @Override

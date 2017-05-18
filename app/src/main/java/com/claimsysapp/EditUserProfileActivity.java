@@ -75,7 +75,7 @@ public class EditUserProfileActivity extends AppCompatActivity{
         }
 
         userName.setText(user.getUserName());
-        workPlace.setText(user.getWorkPlace());
+        //workPlace.setText(user.getWorkPlace());
 
         setTitle("Профиль");
 
@@ -104,9 +104,9 @@ public class EditUserProfileActivity extends AppCompatActivity{
                                     if (user.getRole() != User.SIMPLE_USER) {
                                         User chUser;
                                         try {
-                                            chUser = new User(user.getBranchId(), false, user.getLogin(), user.getPassword(), User.SIMPLE_USER, user.getLogin(), user.getWorkPlace());
-                                            databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SIMPLE_USER_TABLE).child(chUser.getBranchId()).setValue(chUser);
-                                            databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE).child(chUser.getBranchId()).removeValue();
+                                         //   chUser = new User(user.getBranchId(), false, user.getLogin(), user.getPassword(), User.SIMPLE_USER, user.getLogin(), user.getWorkPlace());
+                      //                      databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SIMPLE_USER_TABLE).child(chUser.getBranchId()).setValue(chUser);
+                        //                    databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE).child(chUser.getBranchId()).removeValue();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -118,10 +118,10 @@ public class EditUserProfileActivity extends AppCompatActivity{
                                 } else if (user.getRole() != User.MANAGER) {
                                     User chUser;
                                     try {
-                                        chUser = new User(user.getBranchId(), false, user.getLogin(), user.getPassword(),
-                                                User.MANAGER, user.getLogin(), user.getWorkPlace());
-                                        databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE).child(chUser.getBranchId()).setValue(chUser);
-                                        databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SIMPLE_USER_TABLE).child(chUser.getBranchId()).removeValue();
+                                    //    chUser = new User(user.getBranchId(), false, user.getLogin(), user.getPassword(),
+                                     //           User.MANAGER, user.getLogin(), user.getWorkPlace());
+          //                              databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE).child(chUser.getBranchId()).setValue(chUser);
+            //                            databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SIMPLE_USER_TABLE).child(chUser.getBranchId()).removeValue();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -156,7 +156,7 @@ public class EditUserProfileActivity extends AppCompatActivity{
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         try {
-                            User chUser = new User(user.getBranchId(), false, user.getLogin(), newPassword, user.getRole(), user.getLogin(), user.getWorkPlace());
+                        /*    User chUser = new User(user.getBranchId(), false, user.getLogin(), newPassword, user.getRole(), user.getLogin(), user.getWorkPlace());
                             if (chUser.getRole() == User.MANAGER)
                                 databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE).child(chUser.getBranchId()).setValue(chUser);
                             else if (chUser.getRole() == User.SIMPLE_USER)
@@ -167,7 +167,7 @@ public class EditUserProfileActivity extends AppCompatActivity{
                                 databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_SPECIALIST_TABLE).child(chUser.getBranchId()).setValue(chUser);
                             else if (chUser.getRole() == User.MANAGER)
                                 databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_VERIFIED_MANAGER_TABLE).child(chUser.getBranchId()).setValue(chUser);
-
+*/
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

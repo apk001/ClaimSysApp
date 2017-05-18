@@ -7,8 +7,8 @@ import com.claimsysapp.MyTicketsActivity;
 
 public class DepartmentChief extends User{
 
-    public DepartmentChief(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) {
-        super(branchId, isBlocked, login, password, role, userName, workPlace);
+    public DepartmentChief(String branchId, String login, String password, int role, String userName) {
+        super(branchId, login, password, role, userName);
     }
 
     @Override

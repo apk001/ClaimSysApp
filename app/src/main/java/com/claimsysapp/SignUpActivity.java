@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
-import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,12 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText loginET;
 
     private EditText userNameET;
-    private EditText workPlaceET;
-
     private EditText passwordET;
     private EditText repeatPasswordET;
-
-    private BetterSpinner spinner;
 
     private Button submitBtn;
 
@@ -64,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
     ValueEventListener databaseUserListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            loginList = Globals.Downloads.Strings.getAllLogins(dataSnapshot);
+            loginList = Globals.Downloads.Strings.getLogins(dataSnapshot, false);
         }
 
         @Override
@@ -99,40 +93,17 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     /**
-     * Метод, проверяющий значение RadioButton для получения будущей роли пользователя.
-     * @return Роль пользователя.
-     */
-    private int checkRole() {
-        if (spinner.getText().toString().equals("Пользователь"))
-            return User.SIMPLE_USER;
-        else if (spinner.getText().toString().equals("Работник отдела"))
-            return User.DEPARTMENT_MEMBER;
-        else if (spinner.getText().toString().equals("Начальник отдела"))
-            return User.DEPARTMENT_CHIEF;
-        else if (spinner.getText().toString().equals("Диспетчер"))
-            return  User.MANAGER;
-        else return User.SIMPLE_USER;
-    }
-
-    /**
      * Инициализация переменных и элементов макета
      */
     private void initializeComponents() {
         loginET = (EditText)findViewById(R.id.loginET);
         userNameET = (EditText)findViewById(R.id.userNameET);
-        workPlaceET = (EditText)findViewById(R.id.workPlaceET);
         passwordET = (EditText)findViewById(R.id.passwordET);
         repeatPasswordET = (EditText)findViewById(R.id.repeatPasswordET);
         submitBtn = (Button) findViewById(R.id.submitBtn);
 
-        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
-        databaseIndexReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Indexes.DATABASE_USER_INDEX_COUNTER);
-
-        String[] roles_array = new String[] {"Пользователь", "Специалист", "Начальник отдела", "Диспетчер"};
-
-        spinner = (BetterSpinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_dropdown_item_1line, roles_array));
-        spinner.setText(roles_array[0]);
+        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
+        databaseIndexReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Indexes.DATABASE_USER_INDEX_COUNTER);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -180,20 +151,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 TextInputLayout userNameLayout = (TextInputLayout) findViewById(R.id.userName_layout);
                 userNameLayout.setErrorEnabled(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
-        workPlaceET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                TextInputLayout workPlaceLayout = (TextInputLayout) findViewById(R.id.workPlace_layout);
-                workPlaceLayout.setErrorEnabled(false);
             }
 
             @Override
@@ -262,13 +219,6 @@ public class SignUpActivity extends AppCompatActivity {
             userNameLayout.setError(getResources().getString(R.string.empty_field));
             Globals.showKeyboardOnEditText(SignUpActivity.this, userNameET);
         }
-        else if (workPlaceET.getText().toString().isEmpty()) {
-            workPlaceET.requestFocus();
-            TextInputLayout workPlaceLayout = (TextInputLayout) findViewById(R.id.workPlace_layout);
-            workPlaceLayout.setErrorEnabled(true);
-            workPlaceLayout.setError(getResources().getString(R.string.empty_field));
-            Globals.showKeyboardOnEditText(SignUpActivity.this, workPlaceET);
-        }
         else if (passwordET.getText().toString().isEmpty()) {
             passwordET.requestFocus();
             TextInputLayout passwordLayout = (TextInputLayout) findViewById(R.id.password_layout);
@@ -291,7 +241,6 @@ public class SignUpActivity extends AppCompatActivity {
             Globals.showKeyboardOnEditText(SignUpActivity.this, loginET);
         } else return true;
         return false;
-        //TODO Сделать проверку парольей на длину и англ символы (уже есть в Globals)
     }
 
     /**
@@ -300,16 +249,15 @@ public class SignUpActivity extends AppCompatActivity {
     private void tryAddUser(){
         if (isFieldsContentCorrect()) {
             try {
-                databaseUserReference.child(DatabaseVariables.ExceptFolder.Users.DATABASE_UNVERIFIED_USER_TABLE).child("user_" + userCount)
-                        .setValue(new User("user_" + userCount++, false, loginET.getText().toString(),
-                                passwordET.getText().toString(), checkRole(), userNameET.getText().toString(),
-                                workPlaceET.getText().toString()));
+                databaseUserReference.child(DatabaseVariables.UserFolder.DATABASE_USER_TABLE).child("user_" + userCount)
+                        .setValue(new User("user_" + userCount++, loginET.getText().toString(),
+                                passwordET.getText().toString(), User.SIMPLE_USER, userNameET.getText().toString()));
             } catch (Exception e) {
                 Globals.showLongTimeToast(getApplicationContext(), "Ошибка при присвоении прав пользователю, обратитесь к разработчику");
             }
 
             databaseIndexReference.setValue(userCount);
-            Globals.showLongTimeToast(getApplicationContext(), "Ваша заявка отправлена на рассмотрение дипетчеру");
+            Globals.showLongTimeToast(getApplicationContext(), "Ваша учетная запись была добавлена в базу");
             databaseUserReference.removeEventListener(databaseUserListener);
             databaseIndexReference.removeEventListener(databaseIndexListener);
             SignUpActivity.super.finish();

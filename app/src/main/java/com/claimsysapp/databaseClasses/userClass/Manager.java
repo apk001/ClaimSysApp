@@ -7,8 +7,8 @@ import com.claimsysapp.ListOfTicketsActivity;
 
 public class Manager extends User{
 
-    public Manager(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) {
-        super(branchId, isBlocked, login, password, role, userName, workPlace);
+    public Manager(String branchId, String login, String password, int role, String userName) {
+        super(branchId, login, password, role, userName);
     }
 
     @Override

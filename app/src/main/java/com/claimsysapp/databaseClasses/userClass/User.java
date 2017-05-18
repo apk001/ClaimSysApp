@@ -46,11 +46,6 @@ public class User extends AbstractUser implements Serializable {
     private String branchId;
 
     /**
-     * Флаг, показывающий, заблокирован ли пользователь.
-     */
-    private boolean isBlocked;
-
-    /**
      * Логин пользователя.
      */
     private String login;
@@ -65,17 +60,15 @@ public class User extends AbstractUser implements Serializable {
      */
     private String registrationDate;
 
+    /**
+     * Уровень прав пользователя
+     */
     private int role;
 
     /**
      * Имя пользователя.
      */
     private String userName;
-
-    /**
-     * Рабочее место пользователя.
-     */
-    private String workPlace;
 
     //endregion
 
@@ -95,10 +88,8 @@ public class User extends AbstractUser implements Serializable {
      * @param login Задает логин пользователя.
      * @param password Задает пароль пользователя.
      * @param userName Имя пользователя.
-     * @param workPlace Рабочее место пользователя.
-     * @param isBlocked Флаг, показывающий, заблокирован ли пользователь.
      */
-    public User(String branchId, boolean isBlocked, String login, String password, int role, String userName, String workPlace) {
+    public User(String branchId, String login, String password, int role, String userName) {
         this.branchId = branchId;
         this.login = login;
         this.password = password;
@@ -106,8 +97,6 @@ public class User extends AbstractUser implements Serializable {
         this.role = role;
 
         this.userName = userName;
-        this.workPlace = workPlace;
-        this.isBlocked = isBlocked;
 
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
         this.registrationDate = formatter.format(Calendar.getInstance().getTime());
@@ -122,19 +111,19 @@ public class User extends AbstractUser implements Serializable {
     }
 
     public SimpleUser toSimpleUser(){
-        return new SimpleUser(this.branchId, this.isBlocked, this.login, this.password, this.role, this.userName, this.workPlace);
+        return new SimpleUser(this.branchId, this.login, this.password, this.role, this.userName);
     }
 
     public Manager toManager(){
-        return new Manager(this.branchId, this.isBlocked, this.login, this.password, this.role, this.userName, this.workPlace);
+        return new Manager(this.branchId, this.login, this.password, this.role, this.userName);
     }
 
     public DepartmentMember toDepartmentMember(){
-        return new DepartmentMember(this.branchId, this.isBlocked, this.login, this.password, this.role, this.userName, this.workPlace);
+        return new DepartmentMember(this.branchId, this.login, this.password, this.role, this.userName);
     }
 
     public DepartmentChief toDepartmentChief(){
-        return new DepartmentChief(this.branchId, this.isBlocked, this.login, this.password, this.role, this.userName, this.workPlace);
+        return new DepartmentChief(this.branchId, this.login, this.password, this.role, this.userName);
     }
 
     //endregion
@@ -146,13 +135,6 @@ public class User extends AbstractUser implements Serializable {
      */
     public String getBranchId() {
         return branchId;
-    }
-
-    /**
-     * @return Флаг, показывающий, заблокирован ли пользователь.
-     */
-    public boolean getIsBlocked() {
-        return isBlocked;
     }
 
     /**
@@ -183,13 +165,6 @@ public class User extends AbstractUser implements Serializable {
      */
     public String getUserName() {
         return userName;
-    }
-
-    /**
-     * @return Рабочее место пользователя.
-     */
-    public String getWorkPlace() {
-        return workPlace;
     }
 
     //endregion

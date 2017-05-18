@@ -3,9 +3,9 @@
 
     <string-array name="roles_array">
         <item>Пользователь</item>
-        <item>Специалист</item>
-        <item>Администратор</item>
-        <item>Начальник отдела</item>
+        <item>Сотрудник</item>
+        <item>Менеджер</item>
+        <item>Начальник</item>
     </string-array>
 
     <string-array name="ticket_types_array">

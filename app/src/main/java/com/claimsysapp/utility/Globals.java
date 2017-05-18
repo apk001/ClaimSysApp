@@ -161,38 +161,15 @@ public class Globals {
         public static class Strings {
 
             /**
-             * Метод, скачивающий из базы данных логины неподтвержденных пользователей.
-             * @param dataSnapshot Снимок базы данных.
-             * @return Логины неподтвержденных пользователей.
-             */
-            public static ArrayList<String> getUnverifiedLogins(DataSnapshot dataSnapshot) {
-                ArrayList<String> resultList = new ArrayList<String>();
-                for (DataSnapshot userRecord : dataSnapshot.child(DatabaseVariables.ExceptFolder.Users.DATABASE_UNVERIFIED_USER_TABLE).getChildren())
-                    resultList.add(userRecord.getValue(User.class).getLogin());
-                return resultList;
-            }
-
-            /**
-             * Метод, скачивающий из базы данных логины либо подтвержденных, либо неподтвержденных пользователей.
-             * @param dataSnapshot Снимок базы данных.
-             * @return Логины выбранной категории пользователей.
-             */
-            public static ArrayList<String> getVerifiedLogins(DataSnapshot dataSnapshot) {
-                ArrayList<String> resultList = new ArrayList<String>();
-                ArrayList<User> userList = getUserList(dataSnapshot, true);
-                for (User user : userList)
-                    resultList.add(user.getLogin());
-                return resultList;
-            }
-
-            /**
              * Метод, скачивающий из базы данных логины всех пользователей.
              * @param dataSnapshot Снимок базы данных.
              * @return Логины всех пользователей.
              */
-            public static ArrayList<String> getAllLogins(DataSnapshot dataSnapshot) {
-                ArrayList<String> resultList = getUnverifiedLogins(dataSnapshot);
-                resultList.addAll(getVerifiedLogins(dataSnapshot));
+            public static ArrayList<String> getLogins(DataSnapshot dataSnapshot, boolean rootFolder) {
+                ArrayList<String> resultList = new ArrayList<String>();
+                ArrayList<User> userList = getUserList(dataSnapshot, rootFolder);
+                for (User user : userList)
+                    resultList.add(user.getLogin());
                 return resultList;
             }
 

@@ -5,6 +5,7 @@ public class DatabaseVariables {
     public static final String FIREBASE_URL = "https://infsysprojteam2-abbdf.firebaseio.com/";
 
     public static final String DATABASE_ALL_USER_TABLE = "user_table";
+    public static final String DATABASE_TICKET_TABLE = "ticket_table";
     public static final String DATABASE_INDEX_TABLE = "static_variables_table";
 
     public static class UserFolder {

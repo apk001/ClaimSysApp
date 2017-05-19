@@ -119,8 +119,8 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void initializeComponents(){
-        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
-        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_ALL_TICKET_TABLE);
+        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
+        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_TICKET_TABLE);
 
         isDownloaded = false;
 

@@ -121,7 +121,7 @@ public class CreateTicketActivity extends AppCompatActivity{
                 } else {
                     String newRightDate = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime());
                     try {
-                        if (rightDate == null) {
+                        if (rightDate == null || rightDate.equals("")) {
                             firstDateReference.setValue(newRightDate);
                             lastDateReference.setValue(newRightDate);
                         }

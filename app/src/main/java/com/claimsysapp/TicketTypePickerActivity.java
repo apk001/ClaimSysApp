@@ -2,7 +2,6 @@ package com.claimsysapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -48,7 +47,7 @@ public class TicketTypePickerActivity extends AppCompatActivity implements Navig
         setupListView();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Выбор типа проблемы");
+        toolbar.setTitle("Выбор типа рекламации");
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -82,16 +81,13 @@ public class TicketTypePickerActivity extends AppCompatActivity implements Navig
                 int type = -1;
                 switch (groupPosition){
                     case 0:
-                        type = Ticket.TYPE_SOFTWARE;
+                        type = Ticket.TYPE_LOGISTICS;
                         break;
                     case 1:
-                        type = Ticket.TYPE_HARDWARE;
+                        type = Ticket.TYPE_SERVICE;
                         break;
                     case 2:
-                        type = Ticket.TYPE_EXTERNAL_DEVICES;
-                        break;
-                    case 3:
-                        type = Ticket.TYPE_NETWORK;
+                        type = Ticket.TYPE_RULES;
                         break;
                 }
 
@@ -123,16 +119,14 @@ public class TicketTypePickerActivity extends AppCompatActivity implements Navig
 
         String[] groups = getResources().getStringArray(R.array.ticket_types_array);
 
-        final String[] softwareTroubles = getResources().getStringArray(R.array.software_troubles_array);
-        final String[] hardwareTroubles = getResources().getStringArray(R.array.hardware_troubles_array);
-        final String[] externalDevicesTroubles = getResources().getStringArray(R.array.external_devices_troubles_array);
-        final String[] networkTroubles = getResources().getStringArray(R.array.network_troubles_array);
+        final String[] logisticsTroubles = getResources().getStringArray(R.array.logistics_troubles_array);
+        final String[] serviceTroubles = getResources().getStringArray(R.array.service_troubles_array);
+        final String[] rulesTroubles = getResources().getStringArray(R.array.rules_troubles_array);
 
         ArrayList<String[]> troubles = new ArrayList<String[]>(){{
-            add(softwareTroubles);
-            add(hardwareTroubles);
-            add(externalDevicesTroubles);
-            add(networkTroubles);
+            add(logisticsTroubles);
+            add(serviceTroubles);
+            add(rulesTroubles);
         }};
 
         groupData = new ArrayList<>();

@@ -126,9 +126,9 @@ public class ChartsActivity extends AppCompatActivity implements NavigationView.
                 isDownloaded = false;
             }
             //TODO рассчет при обновлении для уже выбранной даты - при обновлении даты не обновляются, а тикеты обновляются
-            long markedTicketsCount = dataSnapshot.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE).getChildrenCount();
-            long solvedTicketsCount = dataSnapshot.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE).getChildrenCount();
-            long allTicketsCount = dataSnapshot.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_UNMARKED_TICKET_TABLE).getChildrenCount();
+            long markedTicketsCount = dataSnapshot.child(DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE).getChildrenCount();
+            long solvedTicketsCount = dataSnapshot.child(DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE).getChildrenCount();
+            long allTicketsCount = dataSnapshot.child(DatabaseVariables.Folders.TicketFolder.DATABASE_UNMARKED_TICKET_TABLE).getChildrenCount();
 
             initChartData(allTicketsCount, markedTicketsCount, solvedTicketsCount);
             allTickets = Globals.Downloads.Tickets.getAllTickets(dataSnapshot);
@@ -160,7 +160,7 @@ public class ChartsActivity extends AppCompatActivity implements NavigationView.
         lastDateTV = (TextView)findViewById(R.id.lastDateLabel);
         firstDateReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Indexes.DATABASE_FIRST_DATE_INDEX);
         lastDateReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Indexes.DATABASE_LAST_DATE_INDEX);
-        databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_ALL_TICKET_TABLE);
+        databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_TICKET_TABLE);
 
         firstDateTV.setPaintFlags(firstDateTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         lastDateTV.setPaintFlags(lastDateTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

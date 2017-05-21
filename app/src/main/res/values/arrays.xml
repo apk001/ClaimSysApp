@@ -9,37 +9,34 @@
     </string-array>
 
     <string-array name="ticket_types_array">
-        <item>Проблемы с программным обеспечением</item>
-        <item>Проблемы с компьютером</item>
-        <item>Проблемы с внешним оборудованием</item>
-        <item>Проблемы с сетью</item>
+        <item>Проблемы логистики</item>
+        <item>Проблемы сервиса</item>
+        <item>Нарушение правил</item>
     </string-array>
 
-    <string-array name="software_troubles_array">
-        <item>Не удается войти в учетную запись пользователя</item>
-        <item>Не установлено необходимое ПО</item>
-        <item>Не работает необходимое ПО</item>
-        <item>Другие проблемы</item>
+    <string-array name="logistics_troubles_array">
+        <item>Нарушение условий доставки</item>
+        <item>Несоответствия в количестве</item>
+        <item>Повреждение в процессе транспортировки</item>
+        <item>Несоответствие товара</item>
+        <item>Отсутствие товара в ассортименте</item>
+        <item>Другие претензии</item>
     </string-array>
 
-    <string-array name="hardware_troubles_array">
-        <item>Проблемы с производительностью</item>
-        <item>Компьютер не включается</item>
-        <item>Компьютер самопроизвольно выключается</item>
-        <item>Компьютер издает шумы</item>
-        <item>Другие проблемы</item>
+    <string-array name="service_troubles_array">
+        <item>Очереди в кассах</item>
+        <item>Парковки</item>
+        <item>Ненадлежащее поведение сотрудников</item>
+        <item>Другие претензии</item>
     </string-array>
 
-    <string-array name="external_devices_troubles_array">
-        <item>Не работает принтер/сканер/и подобные устройства</item>
-        <item>Не работает клавиатура/мышь/и подобные устройства</item>
-        <item>Не работает монитор</item>
-        <item>Другие проблемы</item>
+    <string-array name="rules_troubles_array">
+        <item>Не предоставлены данные об организации</item>
+        <item>Отсутствие указателей/"бейджей"</item>
+        <item>Отсутсвуют обязательные данные о товаре</item>
+        <item>Отсутсвие сертификата качества на товар</item>
+        <item>Нарушение прав потребителя</item>
+        <item>Другие претензии</item>
     </string-array>
 
-    <string-array name="network_troubles_array">
-        <item>Не работает интернет </item>
-        <item>Не работают сетевые папки</item>
-        <item>Другие проблемы</item>
-    </string-array>
 </resources>

@@ -23,10 +23,6 @@
     <item android:title="Основное">
         <menu>
             <item
-                android:id="@+id/settings"
-                android:icon="@drawable/ic_settings_black_24dp"
-                android:title="Настройки" />
-            <item
                 android:id="@+id/about"
                 android:icon="@drawable/ic_info_black_24dp"
                 android:title="О программе" />

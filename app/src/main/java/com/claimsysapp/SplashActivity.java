@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
                         SplashActivity.this.finish();
                     }
                 };
-                databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
+                databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE);
             } else {
                 Toast.makeText(getApplicationContext(), "Нет подключения к интернету", Toast.LENGTH_LONG).show();
                 showNextActivity();

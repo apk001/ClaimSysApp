@@ -53,7 +53,7 @@ public class EditUserProfileActivity extends AppCompatActivity{
     }
 
     private void initializeComponents(){
-        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
+        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE);
 
         userName = (EditText)findViewById(R.id.userName);
         workPlace = (EditText)findViewById(R.id.workPlace);

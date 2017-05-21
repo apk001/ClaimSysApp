@@ -61,7 +61,7 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
                 ticketsList = Globals.Downloads.Tickets.getOverseerTicketList(dataSnapshot, Globals.currentUser.getLogin(), true);
                 sectionsPagerAdapter.updateFirstFragment(MyTicketsActivity.this, ticketsList, usersList);
 
-                ArrayList<Ticket> listOfSolvedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE);
+                ArrayList<Ticket> listOfSolvedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE);
                 ArrayList<Ticket> listOfMyClosedTickets = new ArrayList<>();
 
                 for (Ticket ticket : listOfSolvedTickets)
@@ -69,11 +69,11 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
                         listOfMyClosedTickets.add(ticket);
                 sectionsPagerAdapter.updateSecondFragment(MyTicketsActivity.this, listOfMyClosedTickets, usersList);
             } else {
-                ticketsList = Globals.Downloads.Tickets.getUserSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE, Globals.currentUser.getLogin());
-                ticketsList.addAll(Globals.Downloads.Tickets.getUserSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_UNMARKED_TICKET_TABLE, Globals.currentUser.getLogin()));
+                ticketsList = Globals.Downloads.Tickets.getUserSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE, Globals.currentUser.getLogin());
+                ticketsList.addAll(Globals.Downloads.Tickets.getUserSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_UNMARKED_TICKET_TABLE, Globals.currentUser.getLogin()));
                 sectionsPagerAdapter.updateFirstFragment(MyTicketsActivity.this, ticketsList, usersList);
 
-                ArrayList<Ticket> listOfSolvedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE);
+                ArrayList<Ticket> listOfSolvedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE);
                 ArrayList<Ticket> listOfMyClosedTickets = new ArrayList<>();
 
                 for (Ticket ticket : listOfSolvedTickets)
@@ -119,8 +119,8 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void initializeComponents(){
-        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
-        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_TICKET_TABLE);
+        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE);
+        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_TICKET_TABLE);
 
         isDownloaded = false;
 

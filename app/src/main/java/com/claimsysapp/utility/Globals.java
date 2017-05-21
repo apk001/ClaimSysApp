@@ -49,7 +49,7 @@ public class Globals {
     public static void showAbout(Context context) {
         new MaterialDialog.Builder(context)
                 .title("О программе")
-                .content(String.format("Tech Support App V%s", context.getString(R.string.app_version)))
+                .content(String.format("Claim System App V%s", context.getString(R.string.app_version)))
                 .positiveText("Ок")
                 .show();
     }
@@ -129,12 +129,12 @@ public class Globals {
              * @param dataSnapshot Снимок базы данных.
              * @return Всех подтвержденных пользователей.
              */
-            public static ArrayList<User> getUserList(DataSnapshot dataSnapshot, boolean rootFolder) {
+            public static ArrayList<User> getUserList(DataSnapshot dataSnapshot, boolean isRootFolder) {
                 ArrayList<User> resultList = new ArrayList<User>();
-                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_CHIEF_TABLE, rootFolder));
-                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_USER_TABLE, rootFolder));
-                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_WORKER_TABLE, rootFolder));
-                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.UserFolder.DATABASE_MANAGER_TABLE, rootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.Folders.UserFolder.DATABASE_CHIEF_TABLE, isRootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.Folders.UserFolder.DATABASE_USER_TABLE, isRootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.Folders.UserFolder.DATABASE_WORKER_TABLE, isRootFolder));
+                resultList.addAll(getSpecificUserList(dataSnapshot, DatabaseVariables.Folders.UserFolder.DATABASE_MANAGER_TABLE, isRootFolder));
                 return resultList;
             }
 
@@ -144,11 +144,11 @@ public class Globals {
              * @param userTypePath Путь в базе данных к необходимой категории подтвержденных пользователей.
              * @return Всех подтвержденных пользователей с определенными правами.
              */
-            public static ArrayList<User> getSpecificUserList(DataSnapshot dataSnapshot, String userTypePath, boolean rootFolder) {
+            public static ArrayList<User> getSpecificUserList(DataSnapshot dataSnapshot, String userTypePath, boolean isRootFolder) {
                 ArrayList<User> resultList = new ArrayList<User>();
-                if (rootFolder)
+                if (isRootFolder)
                     for (DataSnapshot userRecord :
-                            dataSnapshot.child(DatabaseVariables.DATABASE_ALL_USER_TABLE).child(userTypePath).getChildren())
+                            dataSnapshot.child(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE).child(userTypePath).getChildren())
                         resultList.add(userRecord.getValue(User.class));
                 else
                     for (DataSnapshot userRecord : dataSnapshot.child(userTypePath).getChildren())
@@ -196,7 +196,7 @@ public class Globals {
             public static ArrayList<Ticket> getOverseerTicketList(DataSnapshot dataSnapshot, String overseerLogin, boolean exceptFolder) {
                 ArrayList<Ticket> resultList = new ArrayList<Ticket>();
                 if (exceptFolder) {
-                    for (DataSnapshot ticketRecord : dataSnapshot.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE).getChildren()) {
+                    for (DataSnapshot ticketRecord : dataSnapshot.child(DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE).getChildren()) {
                         Ticket ticket = ticketRecord.getValue(Ticket.class);
                         if (ticket.getSpecialistId().equals(overseerLogin))
                             resultList.add(ticket);
@@ -242,9 +242,9 @@ public class Globals {
             }
 
             public static ArrayList<Ticket> getAllTickets(DataSnapshot dataSnapshot) {
-                ArrayList<Ticket> resultList = getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE);
-                resultList.addAll(getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_UNMARKED_TICKET_TABLE));
-                resultList.addAll(getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE));
+                ArrayList<Ticket> resultList = getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE);
+                resultList.addAll(getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_UNMARKED_TICKET_TABLE));
+                resultList.addAll(getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE));
                 return resultList;
             }
 

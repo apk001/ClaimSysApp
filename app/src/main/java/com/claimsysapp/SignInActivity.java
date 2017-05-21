@@ -228,7 +228,7 @@ public class SignInActivity extends AppCompatActivity {
 
         rememberPasCB = (CheckBox)findViewById((R.id.checkBoxBold));
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
+        databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE);
 
         isDownloaded = false;
     }

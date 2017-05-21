@@ -102,8 +102,8 @@ public class SignUpActivity extends AppCompatActivity {
         repeatPasswordET = (EditText)findViewById(R.id.repeatPasswordET);
         submitBtn = (Button) findViewById(R.id.submitBtn);
 
-        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.DATABASE_ALL_USER_TABLE);
-        databaseIndexReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Indexes.DATABASE_USER_INDEX_COUNTER);
+        databaseUserReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE);
+        databaseIndexReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Indexes.DATABASE_USER_INDEX_COUNTER);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -249,7 +249,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void tryAddUser(){
         if (isFieldsContentCorrect()) {
             try {
-                databaseUserReference.child(DatabaseVariables.UserFolder.DATABASE_USER_TABLE).child("user_" + userCount)
+                databaseUserReference.child(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE).child("user_" + userCount)
                         .setValue(new User("user_" + userCount++, loginET.getText().toString(),
                                 passwordET.getText().toString(), User.SIMPLE_USER, userNameET.getText().toString()));
             } catch (Exception e) {

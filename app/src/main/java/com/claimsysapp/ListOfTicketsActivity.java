@@ -53,9 +53,9 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             Globals.logInfoAPK(ListOfTicketsActivity.this, "Скачивание заявок - НАЧАТО");
-            listOfAvailableTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_UNMARKED_TICKET_TABLE);
-            listOfClosedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE);
-            listOfActiveTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE);
+            listOfAvailableTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_UNMARKED_TICKET_TABLE);
+            listOfClosedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE);
+            listOfActiveTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE);
 
             mSectionsPagerAdapter.updateFirstFragment(listOfAvailableTickets, ListOfTicketsActivity.this, FirebaseDatabase.getInstance().getReference());
             mSectionsPagerAdapter.updateSecondFragment(listOfActiveTickets, ListOfTicketsActivity.this);
@@ -110,7 +110,7 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
     }
 
     private void initializeComponents() {
-        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_ALL_TICKET_TABLE);
+        databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_TICKET_TABLE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Все заявки");

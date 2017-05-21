@@ -89,7 +89,7 @@ public class UserActionsActivity extends AppCompatActivity implements Navigation
     }
 
     private void initializeComponents(){
-        databaseRef = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Users.DATABASE_ALL_USER_TABLE);
+        databaseRef = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_ALL_USER_TABLE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Пользователи");
@@ -142,7 +142,7 @@ public class UserActionsActivity extends AppCompatActivity implements Navigation
     }
 
     public static String getDatabaseUserPath(User unVerifiedUser) throws Exception {
-        int role = unVerifiedUser.getRole();
+      /*  int role = unVerifiedUser.getRole();
         if (role == User.SIMPLE_USER)
             return DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_SIMPLE_USER_TABLE;
         else if (role == User.DEPARTMENT_MEMBER)
@@ -151,7 +151,8 @@ public class UserActionsActivity extends AppCompatActivity implements Navigation
             return DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_CHIEF_TABLE;
         else if (role == User.MANAGER)
             return  DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_MANAGER_TABLE;
-        else throw new Exception("Передана нулевая ссылка или неверно указаны права пользователя");
+        else throw new Exception("Передана нулевая ссылка или неверно указаны права пользователя");*/
+        return DatabaseVariables.Folders.UserFolder.DATABASE_USER_TABLE;
     }
 
     private void setEvents() {

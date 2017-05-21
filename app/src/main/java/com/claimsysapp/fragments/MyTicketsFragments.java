@@ -161,7 +161,7 @@ public class MyTicketsFragments {
                     }
                     else {
                         if (ticketsList.get(position).getSpecialistId() == null || ticketsList.get(position).getSpecialistId().equals("")) {
-                            Toast.makeText(context, "Администратор еще не просматривал ваше сообщение, пожалуйста подождите", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Менеджер еще не назначил консультанта для работы с Вами, пожалуйста, подождите", Toast.LENGTH_LONG).show();
                             return;
                         }
                         else {
@@ -181,15 +181,17 @@ public class MyTicketsFragments {
                         final Ticket selectedTicket = ticketsList.get(position);
                         if (selectedTicket.getSpecialistId() == null || selectedTicket.getSpecialistId().equals("")) {
                             new MaterialDialog.Builder(context)
-                                    .title("Отзыв заявки " + selectedTicket.getTicketId() + " от " + selectedTicket.getCreateDate())
+                                    .title("Отзыв заявки " + selectedTicket.getTicketId() + " от "
+                                            + selectedTicket.getCreateDate() + " по теме \""
+                                            + selectedTicket.getTopic().substring(0, (selectedTicket.getTopic().length() > 40 ? 40 : selectedTicket.getTopic().length())) + "\"")
                                     .content("Вы действительно хотите отозвать данную заявку?")
                                     .positiveText("Да")
                                     .negativeText("Нет")
                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            DatabaseReference databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_ALL_TICKET_TABLE);
-                                            databaseTicketReference.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_UNMARKED_TICKET_TABLE).child(selectedTicket.getTicketId()).removeValue();
+                                            FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_UNMARKED_TICKET_TABLE)
+                                                    .child(selectedTicket.getTicketId()).removeValue();
                                             DatabaseStorage.updateLogFile(context, selectedTicket.getTicketId(), DatabaseStorage.ACTION_CLOSED, Globals.currentUser);
                                         }
                                     })
@@ -210,9 +212,9 @@ public class MyTicketsFragments {
                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            DatabaseReference databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_ALL_TICKET_TABLE);
-                                            databaseTicketReference.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_SOLVED_TICKET_TABLE).child(selectedTicket.getTicketId()).setValue(selectedTicket);
-                                            databaseTicketReference.child(DatabaseVariables.ExceptFolder.Tickets.DATABASE_MARKED_TICKET_TABLE).child(selectedTicket.getTicketId()).removeValue();
+                                            DatabaseReference databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_TICKET_TABLE);
+                                            databaseTicketReference.child(DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE).child(selectedTicket.getTicketId()).setValue(selectedTicket);
+                                            databaseTicketReference.child(DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE).child(selectedTicket.getTicketId()).removeValue();
                                             DatabaseStorage.updateLogFile(context, selectedTicket.getTicketId(), DatabaseStorage.ACTION_SOLVED, Globals.currentUser);
                                         }
                                     })

@@ -39,10 +39,9 @@ public class Ticket implements Serializable {
      */
     public final static int SOLVED = 8;
 
-    public final static int TYPE_SOFTWARE = 10;
-    public final static int TYPE_HARDWARE = 11;
-    public final static int TYPE_EXTERNAL_DEVICES = 12;
-    public final static int TYPE_NETWORK = 13;
+    public final static int TYPE_LOGISTICS = 10;
+    public final static int TYPE_SERVICE = 11;
+    public final static int TYPE_RULES = 12;
 
     //endregion
 

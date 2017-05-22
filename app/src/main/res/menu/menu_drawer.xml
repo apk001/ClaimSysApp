@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_report_black_24dp"
             android:title="Все заявки" />
         <item
-            android:id="@+id/userActions"
-            android:icon="@drawable/ic_person_black_24dp"
-            android:title="Пользователи" />
-        <item
             android:id="@+id/charts"
             android:icon="@drawable/ic_show_chart_black_24dp"
             android:title="Статистика" />

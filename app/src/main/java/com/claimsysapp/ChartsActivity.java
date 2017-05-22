@@ -187,7 +187,6 @@ public class ChartsActivity extends AppCompatActivity implements NavigationView.
         Menu nav_menu = navigationView.getMenu();
         userName.setText(Globals.currentUser.getUserName());
         userType.setText("Начальник отдела");
-        nav_menu.findItem(R.id.userActions).setVisible(false);
 
         initChartData(0, 0, 0);
     }
@@ -386,10 +385,6 @@ public class ChartsActivity extends AppCompatActivity implements NavigationView.
             startActivity(intent);
             finish();
         } else if (id == R.id.acceptedTickets) {
-            finish();
-        } else if (id == R.id.userActions) {
-            Intent intent = new Intent(ChartsActivity.this, UserActionsActivity.class);
-            startActivity(intent);
             finish();
         } else if (id == R.id.about) {
             Globals.showAbout(ChartsActivity.this);

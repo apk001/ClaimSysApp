@@ -1,12 +1,23 @@
 package com.claimsysapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.claimsysapp.adapters.SpecialistsRecyclerAdapter;
+import com.claimsysapp.databaseClasses.userClass.DepartmentMember;
+import com.claimsysapp.utility.ItemClickSupport;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,13 +30,13 @@ import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AssignTicketActivity extends AppCompatActivity {
 
     RecyclerView specialistsView;
-    ArrayList<User> chiefsList;
-    ArrayList<User> specialistsList;
+    ArrayList<DepartmentMember> specialistsList;
     DatabaseReference databaseReference;
     Ticket currentTicket;
 
@@ -33,21 +44,9 @@ public class AssignTicketActivity extends AppCompatActivity {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             Globals.logInfoAPK(AssignTicketActivity.this, "Скачивание данных пользователей - НАЧАТО");
-         //   specialistsList = Globals.Downloads.Users.getSpecificUserList(dataSnapshot, DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_SPECIALIST_TABLE);
-           // chiefsList = Globals.Downloads.Users.getSpecificUserList(dataSnapshot, DatabaseVariables.FullPath.Users.DATABASE_VERIFIED_CHIEF_TABLE);
-            ArrayList<SpecialistsExpandableRecyclerAdapter.TicketListItem> ticketListItems = new ArrayList<>();
+            specialistsList = Globals.Downloads.Users.getDepartmentMemberList(dataSnapshot, true);
 
-            specialistsList.addAll(chiefsList);
-
-            for (User user : specialistsList){
-                ticketListItems.add(new SpecialistsExpandableRecyclerAdapter.TicketListItem(user));
-                ArrayList<Ticket> tickets = Globals.Downloads.Tickets.getOverseerTicketList(dataSnapshot, user.getLogin(), false);
-                for (Ticket ticket : tickets)
-                    ticketListItems.add(new SpecialistsExpandableRecyclerAdapter.TicketListItem(ticket));
-            }
-
-            SpecialistsExpandableRecyclerAdapter adapter = new SpecialistsExpandableRecyclerAdapter(AssignTicketActivity.this, ticketListItems, currentTicket);
-            adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
+            SpecialistsRecyclerAdapter adapter = new SpecialistsRecyclerAdapter(AssignTicketActivity.this, specialistsList, getSupportFragmentManager());
 
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(AssignTicketActivity.this, LinearLayoutManager.VERTICAL, false);
             specialistsView.setLayoutManager(mLayoutManager);
@@ -85,8 +84,35 @@ public class AssignTicketActivity extends AppCompatActivity {
     }
 
     private void setEvents(){
-
-    };
+        ItemClickSupport.addTo(specialistsView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(final RecyclerView recyclerView, int position, View v) {
+                final DepartmentMember worker = specialistsList.get(position);
+                new MaterialDialog.Builder(AssignTicketActivity.this)
+                        .title(currentTicket.getTopic())
+                        .content("Вы действительно хотите назначить:\n" + worker.getUserName() + " заявку?")
+                        .positiveText("Назначить")
+                        .negativeText("Отмена")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                databaseReference.child(DatabaseVariables.FullPath.Users.DATABASE_WORKER_TABLE).child(worker.getBranchId()).child("solvingTicketCount").setValue(worker.getSolvingTicketCount()+1);
+                                currentTicket.addSpecialist(worker.getLogin(), worker.getUserName());
+                                databaseReference.child(DatabaseVariables.FullPath.Tickets.DATABASE_MARKED_TICKET_TABLE).child(currentTicket.getTicketId()).setValue(currentTicket);
+                                databaseReference.child(DatabaseVariables.FullPath.Tickets.DATABASE_UNMARKED_TICKET_TABLE).child(currentTicket.getTicketId()).removeValue();
+                                AssignTicketActivity.this.finish();
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
 
     @Override
     protected void onResume() {

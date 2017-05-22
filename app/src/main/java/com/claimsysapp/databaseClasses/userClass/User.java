@@ -2,6 +2,9 @@ package com.claimsysapp.databaseClasses.userClass;
 
 import android.content.Context;
 
+import com.claimsysapp.utility.DatabaseVariables;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -119,7 +122,7 @@ public class User extends AbstractUser implements Serializable {
     }
 
     public DepartmentMember toDepartmentMember(){
-        return new DepartmentMember(this.branchId, this.login, this.password, this.role, this.userName);
+        return new DepartmentMember(this.branchId, this.login, this.password, this.role, this.userName, 0);
     }
 
     public DepartmentChief toDepartmentChief(){

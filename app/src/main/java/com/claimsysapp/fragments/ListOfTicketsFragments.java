@@ -31,7 +31,6 @@ public class ListOfTicketsFragments {
     public static class SectionsPagerAdapter extends FragmentPagerAdapter {
         private FirstFragment firstFragment;
         private SecondFragment secondFragment;
-        private ThirdFragment thirdFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -44,16 +43,13 @@ public class ListOfTicketsFragments {
         public Fragment getItem(int position) {
             if (position == 0)
                 return FirstFragment.newInstance();
-            else if (position == 1)
-                return SecondFragment.newInstance();
-            else
-                return ThirdFragment.newInstance();
+            else return SecondFragment.newInstance();
         }
 
         //Получение числа фрагментов
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         /**
@@ -66,8 +62,6 @@ public class ListOfTicketsFragments {
                     return "Доступные";
                 case 1:
                     return "Активные";
-                case 2:
-                    return "Закрытые";
             }
             return null;
         }
@@ -84,9 +78,6 @@ public class ListOfTicketsFragments {
                     break;
                 case 1:
                     secondFragment = (SecondFragment) createdFragment;
-                    break;
-                case 2:
-                    thirdFragment = (ThirdFragment) createdFragment;
                     break;
             }
             return createdFragment;
@@ -111,14 +102,6 @@ public class ListOfTicketsFragments {
             secondFragment.updateContent(listOfMyActiveTickets, context);
         }
 
-        /**
-         * Метод для обновления информации на третьем фрагменте.
-         * @param listOfSolvedTickets список заявок, закрытых всеми пользователями.
-         * @param context контекст Activity, где был создан фрагмент.
-         */
-        public void updateThirdFragment(ArrayList<Ticket> listOfSolvedTickets, Context context){
-            thirdFragment.updateContent(listOfSolvedTickets, context);
-        }
     }
 
     /**
@@ -150,7 +133,7 @@ public class ListOfTicketsFragments {
             ArrayList<TicketExpandableRecyclerAdapter.TicketListItem> ticketListItems = new ArrayList<>();
 
             //Заполнение списка заявок для передачи в TicketExpandableRecyclerAdapter.class
-            for (int i = 10; i < 14; i++) {
+            for (int i = 10; i < 13; i++) {
                 ticketListItems.add(new TicketExpandableRecyclerAdapter.TicketListItem(Globals.getTicketTypeName(context, i)));
                 int index = 0;
                 for (Ticket ticket : listOfAvailableTickets)
@@ -218,7 +201,7 @@ public class ListOfTicketsFragments {
             ArrayList<TicketExpandableRecyclerAdapter.TicketListItem> ticketListItems = new ArrayList<>();
 
             //Заполнение списка заявок для передачи в TicketExpandableRecyclerAdapter.class
-            for (int i = 10; i < 14; i++) {
+            for (int i = 10; i < 13; i++) {
                 ticketListItems.add(new TicketExpandableRecyclerAdapter.TicketListItem(Globals.getTicketTypeName(context, i)));
                 int index = 0;
                 for (Ticket ticket : listOfActiveTickets)
@@ -260,72 +243,4 @@ public class ListOfTicketsFragments {
         }
     }
 
-    /**
-     * Фрагемент списка заявок, закрытых всем пользователями
-     */
-    public static class ThirdFragment extends Fragment {
-        RecyclerView viewOfSolvedTickets;
-
-        /**
-         * Метод, вызывающийся при создании фрагмента
-         */
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.fragment_recycler, container, false);
-
-            viewOfSolvedTickets = (RecyclerView)v.findViewById(R.id.recycler);
-
-            return v;
-        }
-
-        /**
-         * Метод для обновления информации на третьем фрагменте.
-         * @param listOfSolvedTickets список заявок, закрытых всеми пользователями.
-         * @param context контекст Activity, где был создан фрагмент.
-         */
-        public void updateContent(ArrayList<Ticket> listOfSolvedTickets, Context context){
-            //Создание списка заявок для передачи в TicketExpandableRecyclerAdapter.class
-            ArrayList<TicketExpandableRecyclerAdapter.TicketListItem> ticketListItems = new ArrayList<>();
-
-            //Заполнение списка заявок для передачи в TicketExpandableRecyclerAdapter.class
-            for (int i = 10; i < 14; i++) {
-                ticketListItems.add(new TicketExpandableRecyclerAdapter.TicketListItem(Globals.getTicketTypeName(context, i)));
-                int index = 0;
-                for (Ticket ticket : listOfSolvedTickets)
-                    if (ticket.getType() == i) {
-                        ticketListItems.add(new TicketExpandableRecyclerAdapter.TicketListItem(ticket));
-                        index++;
-                    }
-                ticketListItems.set(ticketListItems.size() - index - 1, new TicketExpandableRecyclerAdapter.TicketListItem(Globals.getTicketTypeName(context, i) + " (" + index + ")"));
-            }
-
-            //Создание нового адаптера для viewOfSolvedTickets
-            TicketExpandableRecyclerAdapter adapter = new TicketExpandableRecyclerAdapter(TicketExpandableRecyclerAdapter.TYPE_CLOSED, context, ticketListItems);
-            adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
-
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-
-            viewOfSolvedTickets.setLayoutManager(mLayoutManager);
-            viewOfSolvedTickets.setHasFixedSize(false);
-            viewOfSolvedTickets.setAdapter(adapter);
-
-            //Раскрытие категорий, которые были раскрыты ранее
-            try {
-                for (int position : Globals.expandedItemsClosed)
-                    adapter.expandItems(position, true);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-
-            adapter.notifyDataSetChanged();
-        }
-
-        /**
-         * Создание нового экземпляра текущего фрагемента
-         */
-        public static ThirdFragment newInstance() {
-            ThirdFragment f = new ThirdFragment();
-            return f;
-        }
-    }
 }

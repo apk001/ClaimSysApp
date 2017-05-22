@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.claimsysapp.databaseClasses.userClass.DepartmentMember;
 import com.google.firebase.database.DataSnapshot;
 import com.claimsysapp.R;
 import com.claimsysapp.databaseClasses.Ticket;
@@ -153,6 +154,18 @@ public class Globals {
                 else
                     for (DataSnapshot userRecord : dataSnapshot.child(userTypePath).getChildren())
                         resultList.add(userRecord.getValue(User.class));
+                return resultList;
+            }
+
+            public static ArrayList<DepartmentMember> getDepartmentMemberList(DataSnapshot dataSnapshot, boolean isRootFolder) {
+                ArrayList<DepartmentMember> resultList = new ArrayList<DepartmentMember>();
+                if (isRootFolder)
+                    for (DataSnapshot userRecord :
+                            dataSnapshot.child(DatabaseVariables.FullPath.Users.DATABASE_WORKER_TABLE).getChildren())
+                        resultList.add(userRecord.getValue(DepartmentMember.class));
+                else
+                    for (DataSnapshot userRecord : dataSnapshot.child(DatabaseVariables.Folders.UserFolder.DATABASE_WORKER_TABLE).getChildren())
+                        resultList.add(userRecord.getValue(DepartmentMember.class));
                 return resultList;
             }
 

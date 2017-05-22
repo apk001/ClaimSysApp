@@ -19,15 +19,17 @@ public class Ticket implements Serializable {
      */
     public final static int NOT_ACCEPTED = 0;
 
+    public final static int REVOKED = 1;
+
     /**
      * Заявка, находящаяся на рассмотрении у консультанта.
      */
-    public final static int ACCEPTED = 1;
+    public final static int ACCEPTED = 2;
 
     /**
      * Заявка, переданная для других консультантов.
      */
-    public final static int SUBMITTED = 2;
+    public final static int SUBMITTED = 3;
 
     /**
      * Заявка, решение которой было подтверждено пользователем - создателем заявки.
@@ -37,7 +39,7 @@ public class Ticket implements Serializable {
     /**
      * Решенная заявка.
      */
-    public final static int SOLVED = 8;
+    public final static int SOLVED = 5;
 
     public final static int TYPE_LOGISTICS = 10;
     public final static int TYPE_SERVICE = 11;

@@ -154,7 +154,6 @@ public class MyTicketsActivity extends AppCompatActivity implements NavigationVi
         Menu nav_menu = navigationView.getMenu();
         userName.setText(Globals.currentUser.getUserName());
 
-        nav_menu.findItem(R.id.userActions).setVisible(false);
         if (role == User.DEPARTMENT_CHIEF) {
             userType.setText("Начальник отдела");
             nav_menu.findItem(R.id.listOfTickets).setVisible(false);

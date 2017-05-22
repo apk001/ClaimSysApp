@@ -68,7 +68,6 @@ public class TicketTypePickerActivity extends AppCompatActivity implements Navig
         userType.setText("Пользователь");
 
         Menu nav_menu = navigationView.getMenu();
-        nav_menu.findItem(R.id.userActions).setVisible(false);
         nav_menu.findItem(R.id.charts).setVisible(false);
         nav_menu.findItem(R.id.acceptedTickets).setTitle("Список ваших заявок");
         nav_menu.findItem(R.id.listOfTickets).setTitle("Создать заявку");

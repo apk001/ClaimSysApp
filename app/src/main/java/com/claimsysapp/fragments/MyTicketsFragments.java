@@ -205,7 +205,9 @@ public class MyTicketsFragments {
                         }
                         else {
                             new MaterialDialog.Builder(context)
-                                    .title("Подтверждение решения проблемы по заявке " + selectedTicket.getTicketId() + " от " + selectedTicket.getCreateDate())
+                                    .title("Вы подтверждаете решения проблемы по заявке " + selectedTicket.getTicketId() + " от " + selectedTicket.getCreateDate() + " по теме \""
+                                    + selectedTicket.getTopic().substring(0, (selectedTicket.getTopic().length() > 40 ? 40 : selectedTicket.getTopic().length())) + "\"")
+                            .content("Вы действительно хотите отозвать данную заявку?")
                                     .content("Ваша проблема действительно была решена?")
                                     .positiveText("Да")
                                     .negativeText("Нет")

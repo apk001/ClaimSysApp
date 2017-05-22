@@ -45,6 +45,15 @@ public class DatabaseVariables {
             public static final String DATABASE_SOLVED_TICKET_TABLE = "ticket_table/solved_table";
 
         }
+
+        public static class Users {
+
+            public static final String DATABASE_USER_TABLE = "user_table/simple_user_table";
+            public static final String DATABASE_WORKER_TABLE = "user_table/worker_table";
+            public static final String DATABASE_CHIEF_TABLE = "user_table/chief_table";
+            public static final String DATABASE_MANAGER_TABLE = "user_table/manager_table";
+
+        }
     }
 
 

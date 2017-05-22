@@ -41,7 +41,6 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
 
     private ArrayList<Ticket> listOfAvailableTickets = new ArrayList<>();
     private ArrayList<Ticket> listOfActiveTickets = new ArrayList<>();
-    private ArrayList<Ticket> listOfClosedTickets = new ArrayList<>();
 
     private ListOfTicketsFragments.SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -54,12 +53,10 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
         public void onDataChange(DataSnapshot dataSnapshot) {
             Globals.logInfoAPK(ListOfTicketsActivity.this, "Скачивание заявок - НАЧАТО");
             listOfAvailableTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_UNMARKED_TICKET_TABLE);
-            listOfClosedTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE);
             listOfActiveTickets = Globals.Downloads.Tickets.getSpecificTickets(dataSnapshot, DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE);
 
             mSectionsPagerAdapter.updateFirstFragment(listOfAvailableTickets, ListOfTicketsActivity.this, FirebaseDatabase.getInstance().getReference());
             mSectionsPagerAdapter.updateSecondFragment(listOfActiveTickets, ListOfTicketsActivity.this);
-            mSectionsPagerAdapter.updateThirdFragment(listOfClosedTickets, ListOfTicketsActivity.this);
 
             Globals.logInfoAPK(ListOfTicketsActivity.this, "Скачивание заявок - ОКОНЧЕНО");
         }
@@ -133,7 +130,7 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
         mSectionsPagerAdapter = new ListOfTicketsFragments.SectionsPagerAdapter(getSupportFragmentManager());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -142,7 +139,7 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
         userName.setText(Globals.currentUser.getUserName());
         Menu nav_menu = navigationView.getMenu();
 
-        userType.setText("Диспетчер");
+        userType.setText("Менеджер");
         nav_menu.findItem(R.id.charts).setVisible(false);
         nav_menu.findItem(R.id.acceptedTickets).setVisible(false);
     }
@@ -162,10 +159,7 @@ public class ListOfTicketsActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.userActions) {
-            Intent intent = new Intent(ListOfTicketsActivity.this, UserActionsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.about) {
+        if (id == R.id.about) {
             Globals.showAbout(ListOfTicketsActivity.this);
         } else if (id == R.id.logOut) {
             Intent intent = new Intent(this, SignInActivity.class);

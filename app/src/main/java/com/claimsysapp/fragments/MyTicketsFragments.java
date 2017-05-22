@@ -28,6 +28,7 @@ import com.claimsysapp.utility.DatabaseVariables;
 import com.claimsysapp.utility.Globals;
 import com.claimsysapp.utility.ItemClickSupport;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -155,18 +156,16 @@ public class MyTicketsFragments {
                 public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                     Intent intent = new Intent(context, MessagingActivity.class);
                     if (role != User.SIMPLE_USER) {
-                        intent.putExtra("chatRoom", ticketsList.get(position).getTicketId());
-                        intent.putExtra("topic", ticketsList.get(position).getTopic());
+                        intent.putExtra("currentTicket", (Serializable) ticketsList.get(position));
                         intent.putExtra("isActive", true);
                     }
                     else {
                         if (ticketsList.get(position).getSpecialistId() == null || ticketsList.get(position).getSpecialistId().equals("")) {
-                            Toast.makeText(context, "Менеджер еще не назначил консультанта для работы с Вами, пожалуйста, подождите", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Администратор еще не просматривал ваше сообщение, пожалуйста подождите", Toast.LENGTH_LONG).show();
                             return;
                         }
                         else {
-                            intent.putExtra("chatRoom", ticketsList.get(position).getTicketId());
-                            intent.putExtra("topic", ticketsList.get(position).getTopic());
+                            intent.putExtra("currentTicket", (Serializable) ticketsList.get(position));
                             intent.putExtra("isActive", true);
                         }
                     }
@@ -181,9 +180,7 @@ public class MyTicketsFragments {
                         final Ticket selectedTicket = ticketsList.get(position);
                         if (selectedTicket.getSpecialistId() == null || selectedTicket.getSpecialistId().equals("")) {
                             new MaterialDialog.Builder(context)
-                                    .title("Отзыв заявки " + selectedTicket.getTicketId() + " от "
-                                            + selectedTicket.getCreateDate() + " по теме \""
-                                            + selectedTicket.getTopic().substring(0, (selectedTicket.getTopic().length() > 40 ? 40 : selectedTicket.getTopic().length())) + "\"")
+                                    .title("Отзыв заявки " + selectedTicket.getTicketId() + " от " + selectedTicket.getCreateDate())
                                     .content("Вы действительно хотите отозвать данную заявку?")
                                     .positiveText("Да")
                                     .negativeText("Нет")
@@ -192,7 +189,8 @@ public class MyTicketsFragments {
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                             FirebaseDatabase.getInstance().getReference(DatabaseVariables.FullPath.Tickets.DATABASE_UNMARKED_TICKET_TABLE)
                                                     .child(selectedTicket.getTicketId()).removeValue();
-                                            DatabaseStorage.updateLogFile(context, selectedTicket.getTicketId(), DatabaseStorage.ACTION_CLOSED, Globals.currentUser);
+                                            DatabaseStorage.updateLogFile(context, selectedTicket.getTicketId(), DatabaseStorage.ACTION_CLOSED, Globals.currentUser, null);
+
                                         }
                                     })
                                     .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -205,9 +203,7 @@ public class MyTicketsFragments {
                         }
                         else {
                             new MaterialDialog.Builder(context)
-                                    .title("Вы подтверждаете решения проблемы по заявке " + selectedTicket.getTicketId() + " от " + selectedTicket.getCreateDate() + " по теме \""
-                                    + selectedTicket.getTopic().substring(0, (selectedTicket.getTopic().length() > 40 ? 40 : selectedTicket.getTopic().length())) + "\"")
-                            .content("Вы действительно хотите отозвать данную заявку?")
+                                    .title("Подтверждение решения проблемы по заявке " + selectedTicket.getTicketId() + " от " + selectedTicket.getCreateDate())
                                     .content("Ваша проблема действительно была решена?")
                                     .positiveText("Да")
                                     .negativeText("Нет")
@@ -217,7 +213,7 @@ public class MyTicketsFragments {
                                             DatabaseReference databaseTicketReference = FirebaseDatabase.getInstance().getReference(DatabaseVariables.Folders.DATABASE_TICKET_TABLE);
                                             databaseTicketReference.child(DatabaseVariables.Folders.TicketFolder.DATABASE_SOLVED_TICKET_TABLE).child(selectedTicket.getTicketId()).setValue(selectedTicket);
                                             databaseTicketReference.child(DatabaseVariables.Folders.TicketFolder.DATABASE_MARKED_TICKET_TABLE).child(selectedTicket.getTicketId()).removeValue();
-                                            DatabaseStorage.updateLogFile(context, selectedTicket.getTicketId(), DatabaseStorage.ACTION_SOLVED, Globals.currentUser);
+                                            DatabaseStorage.updateLogFile(context, selectedTicket.getTicketId(), DatabaseStorage.ACTION_SOLVED, Globals.currentUser, null);
                                         }
                                     })
                                     .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -284,12 +280,10 @@ public class MyTicketsFragments {
                 public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                     Intent intent = new Intent(context, MessagingActivity.class);
                     if (role != User.SIMPLE_USER) {
-                        intent.putExtra("chatRoom", ticketsList.get(position).getTicketId());
-                        intent.putExtra("topic", ticketsList.get(position).getTopic());
+                        intent.putExtra("currentTicket", (Serializable) ticketsList.get(position));
                         intent.putExtra("isActive", false);
                     } else {
-                        intent.putExtra("chatRoom", ticketsList.get(position).getTicketId());
-                        intent.putExtra("topic", ticketsList.get(position).getTopic());
+                        intent.putExtra("currentTicket", (Serializable) ticketsList.get(position));
                         intent.putExtra("isActive", false);
                     }
                     startActivity(intent);

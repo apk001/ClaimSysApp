@@ -19,7 +19,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.claimsysapp.R;
 import com.claimsysapp.UserActionsActivity;
-import com.claimsysapp.adapters.UnverifiedUserRecyclerAdapter;
 import com.claimsysapp.adapters.UserRecyclerAdapter;
 import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
@@ -147,9 +146,9 @@ public class UserActionsFragments {
             unverifiedUsersView.setHasFixedSize(false);
 
             //Создание нового адаптера для unverifiedUsersView
-            UnverifiedUserRecyclerAdapter adapter = new UnverifiedUserRecyclerAdapter(context, unverifiedUsersList);
+          /*  UnverifiedUserRecyclerAdapter adapter = new UnverifiedUserRecyclerAdapter(context, unverifiedUsersList);
             unverifiedUsersView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();*/
 
             //Одиночный клик по unverifiedUsersView
             ItemClickSupport.addTo(unverifiedUsersView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {

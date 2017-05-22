@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
-import com.claimsysapp.adapters.SpecialistsExpandableRecyclerAdapter;
 import com.claimsysapp.databaseClasses.Ticket;
 import com.claimsysapp.databaseClasses.userClass.User;
 import com.claimsysapp.utility.DatabaseVariables;
